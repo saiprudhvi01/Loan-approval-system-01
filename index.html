@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Approval System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .form-group input[type="submit"] {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Loan Approval System</h1>
+        <form id="loan-form">
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="married">Married:</label>
+                <select id="married" name="married" required>
+                    <option value="">Select Status</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dependents">Dependents:</label>
+                <input type="number" id="dependents" name="dependents" required>
+            </div>
+            <div class="form-group">
+                <label for="education">Education:</label>
+                <select id="education" name="education" required>
+                    <option value="">Select Education</option>
+                    <option value="graduate">Graduate</option>
+                    <option value="not_graduate">Not Graduate</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="self_employed">Self Employed:</label>
+                <select id="self_employed" name="self_employed" required>
+                    <option value="">Select Status</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="coapplicant_income">Coapplicant Income:</label>
+                <input type="number" id="coapplicant_income" name="coapplicant_income" required>
+            </div>
+            <div class="form-group">
+                <label for="loan_amt">Loan Amount:</label>
+                <input type="number" id="loan_amt" name="loan_amt" required>
+            </div>
+            <div class="form-group">
+                <label for="loan_amount_term">Loan Amount Term:</label>
+                <input type="number" id="loan_amount_term" name="loan_amount_term" required>
+            </div>
+            <div class="form-group">
+                <label for="credit_history">Credit History:</label>
+                <select id="credit_history" name="credit_history" required>
+                    <option value="">Select Credit History</option>
+                    <option value="1">1</option>
+                    <option value="0">0</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="property_area">Property Area:</label>
+                <select id="property_area" name="property_area" required>
+                    <option value="">Select Property Area</option>
+                    <option value="urban">Urban</option>
+                    <option value="semiurban">Semiurban</option>
+                    <option value="rural">Rural</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="interest">Interest Rate (%):</label>
+                <input type="number" id="interest" name="interest" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Predict">
+            </div>
+            <div id="result" class="result"></div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loan-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Retrieve form values
+            const gender = document.getElementById('gender').value;
+            const married = document.getElementById('married').value;
+            const dependents = document.getElementById('dependents').value;
+            const education = document.getElementById('education').value;
+            const selfEmployed = document.getElementById('self_employed').value;
+            const coapplicantIncome = document.getElementById('coapplicant_income').value;
+            const loanAmt = document.getElementById('loan_amt').value;
+            const loanAmountTerm = document.getElementById('loan_amount_term').value;
+            const creditHistory = document.getElementById('credit_history').value;
+            const propertyArea = document.getElementById('property_area').value;
+            const interest = document.getElementById('interest').value;
+
+            // Calculate total loan amount after interest
+            const totalLoanAmount = loanAmt * (1 + (interest / 100));
+
+            // Log values to console for debugging
+            console.log("Form Values:", {
+                gender,
+                married,
+                dependents,
+                education,
+                selfEmployed,
+                coapplicantIncome,
+                loanAmt,
+                loanAmountTerm,
+                creditHistory,
+                propertyArea,
+                interest,
+                totalLoanAmount
+            });
+
+            // Basic prediction logic (dummy conditions)
+            let resultText = "Loan prediction result: ";
+            let result = "Sorry, you may not get the loan.";
+
+            // Adjust the prediction logic
+            if (creditHistory === '1' && loanAmt < 500000 && loanAmountTerm <= 360 && coapplicantIncome >= 1500 && interest < 20) {
+                result = "Congratulations! You are likely to get the loan.";
+            }
+
+            // Display result
+            document.getElementById('result').innerHTML = `
+                ${result} <br>
+                Total Loan Amount After Interest: ₹${totalLoanAmount.toFixed(2)}
+            `;
+        });
+    </script>
+</body>
+</html>
